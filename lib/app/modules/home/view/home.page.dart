@@ -44,6 +44,8 @@ class HomePage extends GetView<HomeController> {
           return WillPopScope(
               child: Scaffold(
                   appBar: AppBar(
+                    title: TextComponent(value: 'Olá!'),
+                    automaticallyImplyLeading: false,
                     actions: [
                       IconButton(
                           onPressed: () {
