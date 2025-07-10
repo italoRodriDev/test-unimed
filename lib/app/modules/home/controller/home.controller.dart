@@ -9,8 +9,9 @@ class HomeController extends GetxController {
   DataHealthRepository dataHealthRepo = DataHealthRepository();
   ValueNotifier<List<DengueCaseModel>> listDengueCasesEvent =
       ValueNotifier<List<DengueCaseModel>>([]);
+  List<DengueCaseModel> listFilter = [];
   int year = DateTime.now().year;
-  int quantity = 10;
+  int quantity = 100;
 
   @override
   void onReady() {
@@ -18,32 +19,55 @@ class HomeController extends GetxController {
     super.onReady();
   }
 
+  // -> Filtrar casos por ano de registro
   onChangeYear(int newYear) {
     year = newYear;
     clearList;
     getListCasesDengue(quantity);
   }
 
+  // -> Filtrar casos por pesquisa
+  onSearchItemsCode(String query) {
+    if (query.length > 3) {
+      final results = listFilter
+          .where((el) => el.sexo.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+      listDengueCasesEvent.value = results;
+    } else {
+      getListCasesDengue(quantity);
+    }
+  }
+
+  // -> Filtrar casos por quantidade
   onChangeQuantity(int newQuantity) {
     quantity = newQuantity;
     clearList;
     getListCasesDengue(newQuantity);
   }
 
+  // -> Recuperar lista de casos
   getListCasesDengue(int limit) async {
     Response res =
         await dataHealthRepo.getCasesDengue(year: year, limitCases: limit);
-    AuthStatusCode.getStatus(res, (success) {
+    AuthStatusCode.getStatus(res, (success) async {
       final params = res.body['parametros'] as List;
-      final cases = params.map((e) => DengueCaseModel.fromJson(e)).toList();
-      listDengueCasesEvent.value = cases;
+      if (params.isNotEmpty) {
+        final cases = params.map((e) => DengueCaseModel.fromJson(e)).toList();
+        listDengueCasesEvent.value = cases;
+        listFilter = cases;
+      } else {
+        await SnackbarComponent.show(Get.context!,
+            text: 'Nenhum dado encontrado!');
+      }
     }, (error) async {
       await SnackbarComponent.show(Get.context!,
           text: 'Erro ao recuperar dados!');
     });
   }
 
+  // -> Limpar lista de casos
   clearList() {
     listDengueCasesEvent.value.clear();
+    listFilter.clear();
   }
 }

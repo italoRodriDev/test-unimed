@@ -26,6 +26,18 @@ class DengueCaseModel {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'idAgravo': idAgravo,
+      'agravo': agravo,
+      'sexo': sexo,
+      'raca': raca,
+      'isHospitalizado': isHospitalizado,
+      'temFebre': temFebre,
+      'temMialgia': temMialgia,
+    };
+  }
+
   /// Mapeamento de sexo
   String get sexo {
     switch (csSexo) {

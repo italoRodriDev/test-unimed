@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:unimed/app/modules/detail/view/detail.page.dart';
+import 'package:unimed/app/modules/favorites/view/favorites.page.dart';
 import 'package:unimed/app/routers/app_routers.dart';
 
 import '../modules/home/view/home.page.dart';
@@ -18,6 +20,18 @@ class AppPages {
     GetPage(
       name: Routes.HOME,
       page: () => HomePage(),
+      transition: animation,
+      transitionDuration: const Duration(milliseconds: timeAnimation),
+    ),
+    GetPage(
+      name: Routes.DETAIL,
+      page: () => DetailPage(),
+      transition: animation,
+      transitionDuration: const Duration(milliseconds: timeAnimation),
+    ),
+    GetPage(
+      name: Routes.FAVORITES,
+      page: () => FavoritesPage(),
       transition: animation,
       transitionDuration: const Duration(milliseconds: timeAnimation),
     ),
