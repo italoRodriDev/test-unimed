@@ -30,7 +30,7 @@ class HomeController extends GetxController {
   onSearchItemsCode(String query) {
     if (query.length > 3) {
       final results = listFilter
-          .where((el) => el.sexo.toLowerCase().contains(query.toLowerCase()))
+          .where((el) => el.id!.toLowerCase().contains(query.toLowerCase()))
           .toList();
       listDengueCasesEvent.value = results;
     } else {
@@ -46,13 +46,27 @@ class HomeController extends GetxController {
   }
 
   // -> Recuperar lista de casos
+
   getListCasesDengue(int limit) async {
     Response res =
         await dataHealthRepo.getCasesDengue(year: year, limitCases: limit);
+
     AuthStatusCode.getStatus(res, (success) async {
       final params = res.body['parametros'] as List;
+
       if (params.isNotEmpty) {
-        final cases = params.map((e) => DengueCaseModel.fromJson(e)).toList();
+        final allCases =
+            params.map((e) => DengueCaseModel.fromJson(e)).toList();
+
+        final uniqueCases = <String, DengueCaseModel>{};
+        for (var caseItem in allCases) {
+          if (caseItem.id != null) {
+            uniqueCases[caseItem.id!] = caseItem;
+          }
+        }
+
+        final cases = uniqueCases.values.toList();
+
         listDengueCasesEvent.value = cases;
         listFilter = cases;
       } else {

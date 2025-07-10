@@ -37,7 +37,7 @@ class _CardDetailDengueCaseComponentState
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           TextComponent(
-              value: '${widget.data.idAgravo}',
+              value: '${widget.data.id} - ${widget.data.idAgravo}',
               fontWeight: FontWeight.w700,
               fontSize: 33,
               fontFamily: AppFont.Jost,

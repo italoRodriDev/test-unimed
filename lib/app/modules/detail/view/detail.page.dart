@@ -17,6 +17,7 @@ class DetailPage extends GetView<DetailController> {
       Get.back();
     }
 
+    ctrl.loadFavoriteStatus(data);
     return GetBuilder(
         init: ctrl,
         builder: (controller) {

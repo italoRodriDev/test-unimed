@@ -1,4 +1,6 @@
 class DengueCaseModel {
+  final String? id;
+  final String? data;
   final String? idAgravo;
   final String? csSexo;
   final String? csRaca;
@@ -7,6 +9,8 @@ class DengueCaseModel {
   final String? mialgia;
 
   DengueCaseModel({
+    this.id,
+    this.data,
     this.idAgravo,
     this.csSexo,
     this.csRaca,
@@ -17,6 +21,8 @@ class DengueCaseModel {
 
   factory DengueCaseModel.fromJson(Map<String, dynamic> json) {
     return DengueCaseModel(
+      id: json['sem_not'],
+      data: json['dt_notific'],
       idAgravo: json['id_agravo'],
       csSexo: json['cs_sexo'],
       csRaca: json['cs_raca'],
@@ -26,8 +32,23 @@ class DengueCaseModel {
     );
   }
 
+  factory DengueCaseModel.fromFavoritesJson(Map<String, dynamic> json) {
+    return DengueCaseModel(
+      id: json['id'],
+      data: json['data'],
+      idAgravo: json['idAgravo'],
+      csSexo: json['csSexo'],
+      csRaca: json['csRaca'],
+      hospitaliz: json['hospitaliz'],
+      febre: json['febre'],
+      mialgia: json['mialgia'],
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
+      'data': data,
       'idAgravo': idAgravo,
       'agravo': agravo,
       'sexo': sexo,
@@ -66,7 +87,7 @@ class DengueCaseModel {
       case '9':
         return 'Ignorado';
       default:
-        return 'Não informado';
+        return 'ND';
     }
   }
 
@@ -87,7 +108,7 @@ class DengueCaseModel {
       case 'A928':
         return 'Zika';
       default:
-        return 'Desconhecido';
+        return 'ND';
     }
   }
 }

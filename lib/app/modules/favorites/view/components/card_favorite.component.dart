@@ -8,16 +8,23 @@ import 'package:unimed/app/config/fonts/fonts.dart';
 import 'package:unimed/app/data/models/dengue_case.model.dart';
 import 'package:unimed/app/routers/app_routers.dart';
 
-class CardDengueCaseComponent extends StatefulWidget {
+class CardFavoriteDengueCaseComponent extends StatefulWidget {
   DengueCaseModel data;
-  CardDengueCaseComponent({super.key, required this.data});
+  bool? showButtonDelete = false;
+  Function? onChangeRemove;
+  CardFavoriteDengueCaseComponent(
+      {super.key,
+      required this.data,
+      this.showButtonDelete,
+      this.onChangeRemove});
 
   @override
-  State<CardDengueCaseComponent> createState() =>
-      _CardDengueCaseComponentState();
+  State<CardFavoriteDengueCaseComponent> createState() =>
+      _CardFavoriteDengueCaseComponentState();
 }
 
-class _CardDengueCaseComponentState extends State<CardDengueCaseComponent> {
+class _CardFavoriteDengueCaseComponentState
+    extends State<CardFavoriteDengueCaseComponent> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -85,6 +92,16 @@ class _CardDengueCaseComponentState extends State<CardDengueCaseComponent> {
               ),
             ],
           ),
+          widget.showButtonDelete == true
+              ? TextButton(
+                  onPressed: () {
+                    widget.onChangeRemove!();
+                  },
+                  child: TextComponent(
+                    value: 'Remover dos favoritos',
+                    color: AppColor.danger,
+                  ))
+              : Container()
         ],
       ),
     );

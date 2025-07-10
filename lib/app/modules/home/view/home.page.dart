@@ -41,95 +41,100 @@ class HomePage extends GetView<HomeController> {
     return GetBuilder(
         init: ctrl,
         builder: (controller) {
-          return Scaffold(
-              appBar: AppBar(
-                actions: [
-                  IconButton(
-                      onPressed: () {
-                        Get.toNamed(Routes.FAVORITES);
-                      },
-                      icon: Icon(Icons.favorite))
-                ],
-              ),
-              body: SafeArea(
-                child: SingleChildScrollView(
-                    child: Column(
-                  children: [
-                    CarrouselImageComponent(
-                        imageUrls: images, onPageLongClick: (change) {}),
-                    Padding(
-                        padding:
-                            const EdgeInsets.only(top: 10, left: 20, right: 20),
-                        child: TextComponent(
-                          color: AppColor.primary,
-                          value: 'Casos de Dengue na Paraíba',
-                          fontWeight: FontWeight.w700,
-                          fontSize: 18,
-                        )),
-                    Padding(
-                        padding: const EdgeInsets.only(
-                            top: 10, left: 20, right: 20, bottom: 10),
-                        child: SelectComponent(
-                            width: double.maxFinite,
-                            initialValue: controller.year,
-                            labelText: 'Selecione o ano',
-                            primaryColor: AppColor.primary,
-                            menuItemData: years,
-                            onChanged: (value) {
-                              ctrl.onChangeYear(value);
-                            })),
-                    Padding(
-                        padding:
-                            const EdgeInsets.only(top: 10, left: 20, right: 20),
-                        child: SelectComponent(
-                            width: double.maxFinite,
-                            initialValue: controller.quantity,
-                            labelText: 'Selecione a quantidade',
-                            primaryColor: AppColor.primary,
-                            menuItemData: quantities,
-                            onChanged: (value) {
-                              ctrl.onChangeQuantity(value);
-                            })),
-                    Padding(
-                        padding:
-                            const EdgeInsets.only(top: 10, left: 20, right: 20),
-                        child: SearchComponent(
-                            borderRadius: 36,
-                            hintText: 'Buscar por sexo... ex: masculino',
-                            prefixIconData: Icons.search,
-                            onChanged: (query) {
-                              ctrl.onSearchItemsCode(query);
-                            })),
-                    const SizedBox(height: 10),
-                    Divider(
-                      height: 1,
-                      color: AppColor.medium,
-                    ),
-                    ValueListenableBuilder(
-                        valueListenable: ctrl.listDengueCasesEvent,
-                        builder:
-                            (context, List<DengueCaseModel> listCases, child) {
-                          if (listCases.isNotEmpty) {
-                            return SizedBox(
-                                height: 350,
-                                child: ListView.builder(
-                                    itemCount: listCases.length,
-                                    itemBuilder: (context, index) {
-                                      DengueCaseModel caseData =
-                                          listCases[index];
+          return WillPopScope(
+              child: Scaffold(
+                  appBar: AppBar(
+                    actions: [
+                      IconButton(
+                          onPressed: () {
+                            Get.toNamed(Routes.FAVORITES);
+                          },
+                          icon: Icon(
+                            Icons.favorite,
+                            color: AppColor.danger,
+                          ))
+                    ],
+                  ),
+                  body: SafeArea(
+                    child: SingleChildScrollView(
+                        child: Column(
+                      children: [
+                        CarrouselImageComponent(
+                            imageUrls: images, onPageLongClick: (change) {}),
+                        Padding(
+                            padding: const EdgeInsets.only(
+                                top: 10, left: 20, right: 20),
+                            child: TextComponent(
+                              color: AppColor.primary,
+                              value: 'Casos de Dengue na Paraíba',
+                              fontWeight: FontWeight.w700,
+                              fontSize: 18,
+                            )),
+                        Padding(
+                            padding: const EdgeInsets.only(
+                                top: 10, left: 20, right: 20, bottom: 10),
+                            child: SelectComponent(
+                                width: double.maxFinite,
+                                initialValue: controller.year,
+                                labelText: 'Selecione o ano',
+                                primaryColor: AppColor.primary,
+                                menuItemData: years,
+                                onChanged: (value) {
+                                  ctrl.onChangeYear(value);
+                                })),
+                        Padding(
+                            padding: const EdgeInsets.only(
+                                top: 10, left: 20, right: 20),
+                            child: SelectComponent(
+                                width: double.maxFinite,
+                                initialValue: controller.quantity,
+                                labelText: 'Selecione a quantidade',
+                                primaryColor: AppColor.primary,
+                                menuItemData: quantities,
+                                onChanged: (value) {
+                                  ctrl.onChangeQuantity(value);
+                                })),
+                        Padding(
+                            padding: const EdgeInsets.only(
+                                top: 10, left: 20, right: 20),
+                            child: SearchComponent(
+                                borderRadius: 36,
+                                hintText: 'Buscar por sexo... ex: masculino',
+                                prefixIconData: Icons.search,
+                                onChanged: (query) {
+                                  ctrl.onSearchItemsCode(query);
+                                })),
+                        const SizedBox(height: 10),
+                        Divider(
+                          height: 1,
+                          color: AppColor.medium,
+                        ),
+                        ValueListenableBuilder(
+                            valueListenable: ctrl.listDengueCasesEvent,
+                            builder: (context, List<DengueCaseModel> listCases,
+                                child) {
+                              if (listCases.isNotEmpty) {
+                                return SizedBox(
+                                    height: 350,
+                                    child: ListView.builder(
+                                        itemCount: listCases.length,
+                                        itemBuilder: (context, index) {
+                                          DengueCaseModel caseData =
+                                              listCases[index];
 
-                                      return CardDengueCaseComponent(
-                                          data: caseData);
-                                    }));
-                          } else {
-                            return Center(
-                                child: TextComponent(
-                                    value: 'Nenhum caso encontrado'));
-                          }
-                        })
-                  ],
-                )),
-              ));
+                                          return CardDengueCaseComponent(
+                                              data: caseData);
+                                        }));
+                              } else {
+                                return Center(
+                                    child: TextComponent(
+                                        value: 'Nenhum caso encontrado'));
+                              }
+                            })
+                      ],
+                    )),
+                  )),
+              onWillPop: () async => false);
         });
   }
 }

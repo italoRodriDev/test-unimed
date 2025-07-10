@@ -16,18 +16,27 @@ class FavoritesController extends GetxController {
     super.onReady();
   }
 
+  // -> Recuperar favoritos
   Future<void> loadFavorites() async {
     final prefs = await SharedPreferences.getInstance();
-    final stored = prefs.getString('dengue_favorites');
+    final stored = prefs.getString('dengue_favorite'); // <- nome atualizado
 
     if (stored != null) {
-      final decoded = json.decode(stored) as List<dynamic>;
-      final favorites =
-          decoded.map((item) => DengueCaseModel.fromJson(item)).toList();
+      final decoded = json.decode(stored);
+      final favorite = DengueCaseModel.fromFavoritesJson(decoded);
 
-      listDengueCasesEvent.value = favorites;
+      listDengueCasesEvent.value = [favorite]; // Apenas 1 item na lista
     } else {
       listDengueCasesEvent.value = [];
     }
+  }
+
+  // Desfavoritar
+  Future<void> removeFavorite() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.remove('dengue_favorite');
+
+    listDengueCasesEvent.value = [];
   }
 }
