@@ -101,7 +101,7 @@ class HomePage extends GetView<HomeController> {
                                 top: 10, left: 20, right: 20),
                             child: SearchComponent(
                                 borderRadius: 36,
-                                hintText: 'Buscar por sexo... ex: masculino',
+                                hintText: 'Buscar por ID do caso...',
                                 prefixIconData: Icons.search,
                                 onChanged: (query) {
                                   ctrl.onSearchItemsCode(query);
